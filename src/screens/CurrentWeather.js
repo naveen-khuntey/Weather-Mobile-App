@@ -2,24 +2,31 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, ScrollView, Image, TextInput, SafeAreaView } from 'react-native';
 import {Feather} from '@expo/vector-icons';
 import RowText from '../components/RowText';
-export default function CurrentWeather() {
+import { weatherType } from '../Utils/WeatherType';
+export default function CurrentWeather({weatherData}) {
+  console.log("weatherData : ",weatherData);
+  const {
+    main : {temp, feels_like, temp_max, temp_min},
+    weather
+  } = weatherData;
+  const weatherCondition = weather[0]?.main;
   return (
-    <SafeAreaView style={styles.wrapper}>
+    <SafeAreaView style={[styles.wrapper,{backgroundColor: weatherType[weatherCondition].backgroundColor}]}>
       <View style={styles.container}>
-        <Feather name="sun" size={100} color="black" />
-        <Text style={styles.temp}>6</Text>
-        <Text style={styles.feels}>Feels like 5</Text>
+        <Feather name={weatherType[weatherCondition].icon} size={100} color="white" />
+        <Text style={styles.temp}>{`${temp}°C`}</Text>
+        <Text style={styles.feels}>{`Feels like ${feels_like}°C`}</Text>
         <RowText
-          messageOne="High: 8"
-          messageTwo="Low: 6"
+          messageOne={`High: ${temp_max}°C`}
+          messageTwo={`Low: ${temp_min}°C`}
           containerStyles={styles.highLowWrapper}
           messageOneStyles={styles.highLow}
           messageTwoStyles={styles.highLow}
         />
       </View>
       <RowText
-        messageOne="Its Sunny"
-        messageTwo="Its perfect t-shirt weather"
+        messageOne={weather[0]?.description}
+        messageTwo={weatherType[weatherCondition].message}
         containerStyles={styles.bodyWrapper}
         messageOneStyles={styles.descript}
         messageTwoStyles={styles.message}
@@ -52,6 +59,7 @@ const styles = StyleSheet.create({
   },
   highLowWrapper : {
     flexDirection: 'row',
+    gap:10,
   },
   bodyWrapper:{
     justifyContent: 'flex-end',

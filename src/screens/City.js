@@ -1,31 +1,33 @@
 import React from "react";
 import { View, SafeAreaView,StyleSheet,Text, ImageBackground } from "react-native";
 import IconText from "../components/IconText";
-export default function City() {
+import moment from "moment";
+export default function City({weatherData}) {
+    const {name, country, population, sunrise, sunset} = weatherData;
     return (
         <SafeAreaView style={styles.container}>
             <ImageBackground
                 source={require('../../assets/city-bg.jpg')}
                 style={styles.imageLayout}
             >
-                <Text style={[styles.cityText,styles.cityName]}>City</Text>
-                <Text style={[styles.cityText,styles.countryName]}>Country</Text>
+                <Text style={[styles.cityText,styles.cityName]}>{name}</Text>
+                <Text style={[styles.cityText,styles.countryName]}>{country}</Text>
                 <View style={[styles.populationWrapper,styles.rowLayout]}>
                     <IconText iconName="user" 
-                        iconColour="red" 
-                        bodyText="8000" 
+                        iconColour="white" 
+                        bodyText={`population : ${population}`}
                         bodyTextStyles={styles.population}
                     />
                 </View>
                 <View style={[styles.riseSetWrapper,styles.rowLayout]}>
                     <IconText iconName="sunrise" 
                         iconColour="white" 
-                        bodyText="07:08:28AM" 
+                        bodyText={moment(sunrise).format('hh:mm:ss A')} 
                         bodyTextStyles={styles.riseSetText}
                     />
                     <IconText iconName="sunset" 
                         iconColour="white" 
-                        bodyText="05:28:28PM" 
+                        bodyText={moment(sunset).format('hh:mm:ss A')} 
                         bodyTextStyles={styles.riseSetText}
                     />
                 </View>
@@ -61,7 +63,7 @@ const styles = StyleSheet.create({
         marginTop: 30,
     },
     population: {
-        color: 'red',
+        color: 'white',
         fontSize: 25,
         marginLeft: 7.5,
     },
