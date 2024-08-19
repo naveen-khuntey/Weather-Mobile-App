@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from "react";
 import * as Location from 'expo-location';
-const apikey = process.env.EXPO_PUBLIC_API_KEY;
+const apikey = process.env.EXPO_PUBLIC_API_KEY || "ea706d647f3b91b5038427b5b22b9968";
 
 export default function useGetWeather() {
   const [isLoading, setIsLoading] = useState(true);
